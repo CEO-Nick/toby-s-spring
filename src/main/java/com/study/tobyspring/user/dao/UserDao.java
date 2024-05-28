@@ -6,27 +6,37 @@ import java.sql.*;
 
 public class UserDao {
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+//    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+//        UserDao dao = new UserDao();
+//
+//        User user = new User();
+//        user.setId("jiseon");
+//        user.setName("하지선");
+//        user.setPassword("gkwltjs");
+//
+//        dao.add(user);
+//
+//        System.out.println(user.getId() + " 등록 성공!!");
+//
+//        User user2 = dao.get(user.getId());
+//        System.out.println(user2.getName());
+//        System.out.println(user2.getPassword());
+//
+//        System.out.println(user2.getId() + " 조회 성공!!");
+//    }
 
-        User user = new User();
-        user.setId("jiseon");
-        user.setName("하지선");
-        user.setPassword("gkwltjs");
+//    private SimpleConnectionMaker simpleConnectionMaker;    // UserDAO가 너무 특정 클래스에 의존적임
 
-        dao.add(user);
-
-        System.out.println(user.getId() + " 등록 성공!!");
-
-        User user2 = dao.get(user.getId());
-        System.out.println(user2.getName());
-        System.out.println(user2.getPassword());
-
-        System.out.println(user2.getId() + " 조회 성공!!");
+    private ConnectionMaker connectionMaker;
+    public UserDao(ConnectionMaker connectionMaker) {
+//        simpleConnectionMaker = new SimpleConnectionMaker();
+        this.connectionMaker = connectionMaker;
     }
 
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+//        Connection c = getConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values (?, ?, ?)"
@@ -42,7 +52,8 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+//        Connection c = getConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?"
@@ -63,10 +74,10 @@ public class UserDao {
         return user;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        return DriverManager.getConnection(
-                "jdbc:h2:tcp://localhost/~/toby_spring", "sa", ""
-        );
-    }
+//    private Connection getConnection() throws ClassNotFoundException, SQLException {
+//        Class.forName("org.h2.Driver");
+//        return DriverManager.getConnection(
+//                "jdbc:h2:tcp://localhost/~/toby_spring", "sa", ""
+//        );
+//    }
 }
