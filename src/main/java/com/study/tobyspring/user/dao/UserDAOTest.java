@@ -2,6 +2,8 @@ package com.study.tobyspring.user.dao;
 
 import com.study.tobyspring.user.domain.User;
 import java.sql.SQLException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class UserDAOTest {
 
@@ -16,7 +18,11 @@ public class UserDAOTest {
 //        UserDao userDao = new UserDao(connectionMaker);
 
         // DaoFactory를 통해 UserDAO 생성하는 책임 안짐
-        UserDao dao = new DaoFactory().userDao();
+//        UserDao dao = new DaoFactory().userDao();
+
+        // Application Context를 통해 UserDao의 오브젝트 가져오기
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
         user.setId("jiseon");
